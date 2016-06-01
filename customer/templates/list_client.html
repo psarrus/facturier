@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+    <table class="table table-bordered">
+        <tr>
+            <th class="center">Prénom</th>
+            <th class="center">Nom</th>
+            <th class="center">Email</th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        {% for client in clients %}
+        <tr>
+            <td>{{ client.first_name }}</td>
+            <td>{{ client.last_name }}</td>
+            <td>{{ client.email }}</td>
+            <td class="center"><a href="{% url 'detail-client' client.id %}"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+            <td class="center"><a href=""><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></td>
+        </tr>
+        {% endfor %}
+            {% for add in address %}
+                <tr>
+                    <td>{{ add.address.street }}</td>
+                    <td>{{ add.address.zipcode }}</td>
+                                <td>{{ add.address.city }}</td>
+                </tr>
+            {% endfor %}
+
+    </table>
+</div>
+
+{% endblock %}

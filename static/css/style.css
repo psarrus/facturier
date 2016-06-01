@@ -1,0 +1,31 @@
+#logo {
+    width: 150px;
+}
+.container {
+    width: 80%;
+    margin: auto;
+}
+.livraison {
+    margin-bottom: 20px;
+}
+.center {
+    text-align: center;
+}
+.right {
+    text-align: right;
+}
+.table {
+    margin-top: 20px;
+}
+.large5{
+    width: 5%;
+}
+.large10{
+    width: 10%;
+}
+.large20{
+    width: 20%;
+}
+.label {
+    font-size: 1.5rem;
+}

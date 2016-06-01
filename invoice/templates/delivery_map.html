@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load leaflet_tags %}
+
+{% block content %}
+
+{% leaflet_map "yourmap" callback="window.map_init_basic" %}
+
+<style>
+
+    .leaflet-container {  /* all maps */
+        width:  100%;
+        height: 600px;
+    }
+
+</style>
+
+<script type="text/javascript">
+   function map_init_basic (map, options) {
+       {% for addr in addresses %}
+       L.marker([{{addr.point.y|stringformat:".3f"}},
+       {{addr.point.x|stringformat:".3f"}}]).addTo(map).bindPopup('blabla');
+       {% endfor %}
+   }
+</script>
+
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends "easy_pdf/base.html" %}
+{% load staticfiles %}
+
+
+{% block layout_style %}
+    <style type="text/css">
+        @page {
+            size: {{ pagesize|default:"A4" }};
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-top: 2cm;
+            margin-bottom: 2cm;
+            /*@frame header {
+                -pdf-frame-content: page-header;
+                margin-top: 1.3cm;
+                margin-right: 2mm;
+                margin-bottom: 1cm;
+                margin-left: 1.2cm;
+            }*/
+        }
+    </style>
+{% endblock %}
+
+{% block extra_style %}
+    <style type="text/css">
+        /*@font-face { font-family: Lato; src: url(fonts/Lato-Bol.ttf); font-weight: bold; }
+        @font-face { font-family: Lato; src: url(fonts/Lato-Reg.ttf); }
+        @font-face { font-family: "Lato Light"; src: url(fonts/Lato-Lig.ttf); }*/
+        html {
+            font-family: "Lato", "Helvetica", "sans-serif";
+            color: #333333;
+        }
+        p {
+            margin: 0 0 6px 0;
+            font-size: 11pt;
+            font-family: "Lato", "Helvetica", "sans-serif";
+        }
+        fieldset {
+            font-size: 10pt;
+        }
+        .num-date {
+            font-size: 10pt;
+        }
+        table {
+            line-height: 140%;
+            margin-bottom: 20px;
+        }
+            .table-bordered {
+                border: 1pt solid black;
+            }
+            tr, td, th { border: none; }
+            th {
+                background-color: lightgrey;
+                font-size: 10pt;
+                border-bottom: 1pt solid black;
+                padding: 3px 0;
+                line-height: 1;
+                font-weight: bold;
+                color: black;
+            }
+            td {
+                font-size: 10pt;
+                border-bottom: 1pt solid black;
+                border-left: 1pt solid black;
+                font-family: "Lato", "Helvetica", "sans-serif";
+                vertical-align: middle;
+                padding: 3px 5px;
+            }
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        .bottom-10 { margin-bottom: 10px; }
+        .bottom-20 { margin-bottom: 20px; }
+        .header { color: #7f7f7f; }
+        .header p { font-size: 13px; line-height: 1.5em; }
+        .header-link { font-weight: bold; text-decoration: none; color: #4F81BD; font-size: 14px; }
+        .logo { margin-bottom: 20px; margin-left: -25px; }
+        .logo img { zoom: 60%; }
+        .recipient { margin-left: 7cm; }
+        h1 {
+            margin: 18px 0 18px 0;
+            font-size: 250%;
+            font-weight: normal;
+            color: #4F81BD;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+<div id="content">
+
+<div class="container">
+    <img id="logo" src="{% static 'img/logo2014.png' %}" alt="" />
+<div class="row">
+    <div class="col-md-6">
+
+    </div>
+    <div id="address" class="col-md-6">
+
+        <h1>FACTURE</h1>
+        {% for ad in  invoice.client.clientaddress_set.all   %}
+        {% if ad.type == "1" %}
+
+        <fieldset><legend class="text-right">Adresse de Facturation</legend>
+                {{ invoice.client }} </br>
+                {{ ad.address.street }}
+                {{ ad.address.zipcode }}
+                {{ ad.address.city }}
+        </fieldset>
+        {% endif %}
+        {% endfor %}
+
+        {% for ad in  invoice.client.clientaddress_set.all  %}
+        {% if ad.type == "2" %}
+        <fieldset class="livraison"><legend class="right">Adresse de Livraison</legend>
+            {{ invoice.client }} </br>
+            {{ ad.address.street }}
+            {{ ad.address.zipcode }}
+            {{ ad.address.city }}
+        </fieldset>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+</div>
+<div class="num-date">
+
+    Date de Facture : {{ invoice.creation_date }} </br>
+    Numéro de Facture : {{ invoice.ref }}
+
+    <table class="table table-bordered">
+        <tr>
+            <th class="large5 center">Ref</th>
+            <th class="large20 center">Product</th>
+            <th class="large5 center">Qte</th>
+            <th class="large5 center">PU ttc</th>
+            <th class="large5 center">tx tva</th>
+            <th class="large5 center">ht</th>
+            <th class="large5 center">tva</th>
+            <th class="large5 center">ttc</th>
+        </tr>
+
+    {% for invoiceline in invoice.invoiceline_set.all %}
+    <tr>
+        <td class="text-center">{{ invoiceline.product.ref}}</td>
+        <td>{{ invoiceline.product }}</td>
+        <td class="text-center">{{ invoiceline.quantity }}</td>
+        <td class="text-center">{{ invoiceline.unit_price|floatformat:2 }}</td>
+        <td class="text-center">{{ invoiceline.product.get_vat_display }}</td>
+        <td class="text-right">{{ invoiceline.get_ht|floatformat:2 }}</td>
+        <td class="text-right">{{ invoiceline.get_tva|floatformat:2 }}</td>
+        <td class="text-right">{{ invoiceline.get_total|floatformat:2 }}</td>
+    </tr>
+    {% endfor %}
+
+    <tr>
+        <td class="text-right" colspan=7>HT</td>
+        <td class="text-right">{{ invoice.get_ht|floatformat:2 }}</td>
+    </tr>
+    {% if invoice.get_tva.0 != 0 %}
+    <tr>
+        <td class="text-right" colspan=7>TVA 5.5%</td>
+        <td class="text-right">{{ invoice.get_tva.0|floatformat:2 }}</td>
+    </tr>
+    {% endif %}
+    {% if invoice.get_tva.1 != 0 %}
+    <tr>
+        <td class="text-right" colspan=7>TVA 10%</td>
+        <td class="text-right">{{ invoice.get_tva.1|floatformat:2 }}</td>
+    </tr>
+    {% endif %}
+    {% if invoice.get_tva.2 != 0 %}
+    <tr>
+        <td class="text-right" colspan=7>TVA 20%</td>
+        <td class="text-right">{{ invoice.get_tva.2|floatformat:2 }}</td>
+    </tr>
+    {% endif %}
+    <tr>
+        <td class="text-right" colspan=7>TTC</td>
+        <td class="text-right">{{ invoice.get_total|floatformat:2 }}</td>
+    </tr>
+</table>
+</div>
+</div>
+</div>
+{% endblock %}

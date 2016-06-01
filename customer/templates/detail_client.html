@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+    <h1>{{ client.first_name }} {{ client.last_name }} {{ client.mobile }}</h1>
+    <h3>{{ client.email }} {{ client.web }}</h3>
+
+    <table class="table table-bordered">
+        {% for add in address %}
+        <tr>
+            <th class="center">Adresse de {{ add.get_type_display }}</th>
+            <th class="center">Tel</th>
+            <th class="center">Fax</th>
+        </tr>
+        <tr>
+            <td>{{ add.address.street }} </br> {{ add.address.zipcode }} {{ add.address.city }}</td>
+            <td>{{ add.address.tel }} </td>
+            <td>{{ add.address.fax }} </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+</div>
+
+{% endblock %}

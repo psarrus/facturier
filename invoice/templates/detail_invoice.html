@@ -1,0 +1,101 @@
+
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="container">
+
+    <img id="logo" src="{% static 'img/logo2014.png' %}" alt="" />
+
+    <div class="row">
+        <div class="col-md-6">
+
+        </div>
+        <div class="col-md-6">
+
+
+            {% for ad in address %}
+            {% if ad.type == "1" %}
+
+            <fieldset><legend class="right">Adresse de Facturation</legend>
+                    {{ invoice.client }} </br>
+                    {{ ad.address.street }}
+                    {{ ad.address.zipcode }}
+                    {{ ad.address.city }}
+            </fieldset>
+            {% endif %}
+            {% endfor %}
+
+            {% for ad in address %}
+            {% if ad.type == "2" %}
+            <fieldset class="livraison"><legend class="right">Adresse de Livraison</legend>
+                {{ invoice.client }} </br>
+                {{ ad.address.street }}
+                {{ ad.address.zipcode }}
+                {{ ad.address.city }}
+            </fieldset>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+    </div>
+    <div class="">
+
+        Date de Facture : {{ invoice.creation_date }} </br>
+        Numéro de Facture : {{ invoice.ref }}
+
+        <table class="table table-bordered">
+            <tr>
+                <th class="large5 center">Ref</th>
+                <th class="large20 center">Product</th>
+                <th class="large5 center">Qte</th>
+                <th class="large5 center">PU ttc</th>
+                <th class="large5 center">tx tva</th>
+                <th class="large5 center">ht</th>
+                <th class="large5 center">tva</th>
+                <th class="large5 center">ttc</th>
+            </tr>
+
+        {% for invoiceline in invoicelines %}
+        <tr>
+            <td class="center">{{ invoiceline.product.ref}}</td>
+            <td>{{ invoiceline.product }}</td>
+            <td class="center">{{ invoiceline.quantity }}</td>
+            <td class="center">{{ invoiceline.unit_price|floatformat:2 }}</td>
+            <td class="center">{{ invoiceline.product.get_vat_display }}</td>
+            <td class="right">{{ invoiceline.get_ht|floatformat:2 }}</td>
+            <td class="right">{{ invoiceline.get_tva|floatformat:2 }}</td>
+            <td class="right">{{ invoiceline.get_total|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+
+        <tr>
+            <td class="right" colspan=7>HT</td>
+            <td class="right">{{ invoice.get_ht|floatformat:2 }}</td>
+        </tr>
+        {% if invoice.get_tva.0 != 0 %}
+        <tr>
+            <td class="right" colspan=7>TVA 5.5%</td>
+            <td class="right">{{ invoice.get_tva.0|floatformat:2 }}</td>
+        </tr>
+        {% endif %}
+        {% if invoice.get_tva.1 != 0 %}
+        <tr>
+            <td class="right" colspan=7>TVA 10%</td>
+            <td class="right">{{ invoice.get_tva.1|floatformat:2 }}</td>
+        </tr>
+        {% endif %}
+        {% if invoice.get_tva.2 != 0 %}
+        <tr>
+            <td class="right" colspan=7>TVA 20%</td>
+            <td class="right">{{ invoice.get_tva.2|floatformat:2 }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td class="right" colspan=7>TTC</td>
+            <td class="right">{{ invoice.get_total|floatformat:2 }}</td>
+        </tr>
+    </table>
+
+{% endblock %}
