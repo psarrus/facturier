@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Modification d'un produit</h1>
+
+<form class="" action="{% url 'update-product' product.id %}" method="post">
+    {% csrf_token %}
+
+    <div class="">
+        <span class="">Référence</span>
+        {{ form.ref.errors}}{{ form.ref }}
+    </div>
+    <div class="">
+        <span class="">Produit</span>
+        {{ form.ref.errors}}{{ form.designation }}
+    </div>
+    <div class="">
+        <span class="">PU TTC</span>
+        {{ form.ref.errors}}{{ form.unit_price }}
+    </div>
+    <div class="">
+        <span class="">TVA</span>
+        {{ form.ref.errors}}{{ form.vat }}
+    </div>
+
+<input type="submit" name="name" value="Modifier">
+</form>
+
+{% endblock %}

@@ -34,7 +34,6 @@ class InvoiceDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(InvoiceDetailView, self).get_context_data(**kwargs)
-        context["address"] = self.get_object().client.clientaddress_set.all()
         context["invoicelines"] = self.get_object().invoiceline_set.all()
         return context
 
@@ -49,30 +48,15 @@ class InvoiceDetailPDFView(PDFTemplateView):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 class InvoiceCreateView(CreateView):
-    template_name = 'create_invoice.html'
     model = Invoice
+    template_name = 'create_invoice.html'
     fields = '__all__'
     success_url = reverse_lazy('list-fact')
 
-    def get_form(self, form_class):
-        form = super(InvoiceCreateView, self).get_form(form_class)
-        form.fields['creation_date'].widget.attrs.update({'class': 'datepicker'})
-        return form
-
     def get_context_data(self, **kwargs):
         context = super(InvoiceCreateView, self).get_context_data(**kwargs)
+        # context ['address'] = AdresseLineFormSet()
         context ["invoiceline_formset"] = InvoiceLineFormSet()
         return context
 

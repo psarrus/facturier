@@ -10,6 +10,7 @@
             <th class="center">date</th>
             <th class="center">client</th>
             <th class="center">total</th>
+            <th class="center">paiement</th>
             <th></th>
             <th></th>
         </tr>
@@ -21,6 +22,7 @@
             <td>{{ invoice.creation_date }}</td>
             <td>{{ invoice.client }}</td>
             <td class="right">{{ invoice.get_total|floatformat:2 }}</td>
+            <td>{{ invoice.paiement }}</td>
             <td class="center"><a href="{% url "detail-fact" invoice.id %}"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
             <td class="center"><a href=""><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></td>
         </tr>

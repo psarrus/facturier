@@ -8,7 +8,7 @@ class InvoiceInlineAdmin(admin.TabularInline):
     extra = 1
 
 class InvoiceAdmin(admin.ModelAdmin):
-    list_display = ["ref","creation_date", "client","payement_date"]
+    list_display = ["ref","creation_date", "client","paiement_date"]
     inlines = [InvoiceInlineAdmin]
 
 class InvoiceLineAdmin(admin.ModelAdmin):

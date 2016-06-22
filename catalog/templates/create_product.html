@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+<fieldset>
+    <legend class="center">Création d'un nouveau produit</legend>
+    <form class="" action="{% url 'create-product' %}" method="post">
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="div-create-produit">
+            {{ field }}
+        </div>
+        {% endfor %}
+
+        <div class="center btn-form">
+            <input type="submit" name="name" value="Créer">
+        </div>
+    </form>
+
+</fieldset>
+</div>
+
+{% endblock %}

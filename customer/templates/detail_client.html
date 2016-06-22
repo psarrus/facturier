@@ -2,21 +2,24 @@
 
 {% block content %}
 <div class="container">
+<div>
+    <h1>{{ client.first_name }} {{ client.last_name }} </h1><h3>{{ client.mobile }}</h3>
+    <a class="btn btn-default btn-modif-client" href="{% url 'update-client' client.id %}">Modifier</a>
 
-    <h1>{{ client.first_name }} {{ client.last_name }} {{ client.mobile }}</h1>
+</div>
     <h3>{{ client.email }} {{ client.web }}</h3>
 
     <table class="table table-bordered">
-        {% for add in address %}
+        {% for add in addresslines %}
         <tr>
             <th class="center">Adresse de {{ add.get_type_display }}</th>
             <th class="center">Tel</th>
             <th class="center">Fax</th>
         </tr>
         <tr>
-            <td>{{ add.address.street }} </br> {{ add.address.zipcode }} {{ add.address.city }}</td>
-            <td>{{ add.address.tel }} </td>
-            <td>{{ add.address.fax }} </td>
+            <td>{{ add.street }} </br> {{ add.zipcode }} {{ add.city }}</td>
+            <td>{{ add.tel }} </td>
+            <td>{{ add.fax }} </td>
         </tr>
         {% endfor %}
 

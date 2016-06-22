@@ -3,10 +3,10 @@
 {% block content %}
 <div class="container">
 
-    <form class="" action="{% url 'create-client' %}" method="post">
-    <fieldset>
-        <legend class="center">Création d'un nouveau client</legend>
+<fieldset>
+    <legend class="center">Modification d'un client</legend>
 
+    <form class="" action="{% url 'update-client' client.id %}" method="post">
         {% csrf_token %}
 
         {% for field in form %}
@@ -19,11 +19,13 @@
 
     <fieldset>
         <legend class="center">Adresses</legend>
-        {{ addressline_formset.management_form }}
-        {{ addressline_formset.non_form_errors }}
         <div class="addressline">
+
+            {{ addressline_formset.management_form }}
+            {{ addressline_formset.non_form_errors }}
+
             <div class="div-create-client">
-                    {% for addressline_form in addressline_formset %}
+                {% for addressline_form in addressline_formset %}
                     {{ addressline_form.type.errors }}
                     {{ addressline_form.type }}
                     {{ addressline_form.street.errors }}

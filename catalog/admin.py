@@ -4,6 +4,6 @@ from models import Product
 # Register your models here.
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ["ref","name","unit_price", "vat"]
+    list_display = ["ref","designation","unit_price", "vat"]
 
 admin.site.register(Product, ProductAdmin)

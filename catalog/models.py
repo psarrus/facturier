@@ -13,9 +13,9 @@ class Product(models.Model):
     )
 
     ref = models.CharField(max_length=10)
-    name = models.CharField(max_length=50)
+    designation = models.CharField(max_length=50)
     unit_price = models.FloatField()
     vat = models.FloatField(choices=code_vat_choices,)
 
     def __unicode__(self):
-        return "%s" % self.name
+        return "%s" % self.designation

@@ -4,6 +4,7 @@
 .container {
     width: 80%;
     margin: auto;
+    background-color: lightgrey;
 }
 .livraison {
     margin-bottom: 20px;
@@ -28,4 +29,31 @@
 }
 .label {
     font-size: 1.5rem;
+}
+.form_create {
+    width: 80%;
+    margin: auto;
+}
+.trash {
+    text-align: center;
+}
+.addressline {
+    width: 33%;
+    text-align: center;
+    float: left;
+}
+.div-create-client, .div-create-produit {
+    text-align: center;
+    margin: 0 15px 10px 0;
+}
+.btn-form {
+    margin: 10px 0;
+}
+h1 {
+    display: inline-block;
+
+}
+.btn-modif-client {
+    float: right;
+    margin: 15px 0;
 }

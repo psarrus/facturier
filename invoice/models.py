@@ -9,7 +9,7 @@ class Invoice(models.Model):
     ref = models.IntegerField()
     creation_date = models.DateField()
     client = models.ForeignKey(Client)
-    payement_date = models.DateField(null=True,blank=True)
+    paiement_date = models.DateField(null=True,blank=True)
 
     def get_total(self):
         total = 0
@@ -28,7 +28,7 @@ class Invoice(models.Model):
         for line in self.invoiceline_set.all():
             if line.product.vat == 0.055:
                 tva1 += line.get_tva()
-            elif line.product.vat ==    0.1:
+            elif line.product.vat == 0.1:
                 tva2 += line.get_tva()
             else:
                 tva3 += line.get_tva()

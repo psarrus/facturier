@@ -26,5 +26,5 @@ urlpatterns = [
     url(r'^invoice/', include("invoice.urls")),
     url(r'^product/', include("catalog.urls")),
     url(r'^customer/', include("customer.urls")),
-    # url(r'^catalog/', include("catalog.urls")),
+    url(r'^catalog/', include("catalog.urls")),
     ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

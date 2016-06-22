@@ -2,6 +2,7 @@ from django.forms import ModelForm, modelform_factory
 from django.forms.models import inlineformset_factory
 
 from models import Invoice, InvoiceLine
+from customer.models import Client, Address
 
 
 # class InvoiceForm(ModelForm):

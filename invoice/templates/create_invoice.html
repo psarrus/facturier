@@ -2,44 +2,93 @@
 
 {% block content %}
 
-<form role="form" name="form" action="{% url "create-fact" %}" method="post" enctype="multipart/form-data">
-
+<form class="form_create" role="form" name="form" action="{% url "create-fact" %}" method="post" enctype="multipart/form-data">
 <fieldset><legend>En-tête Facture</legend>
 {% csrf_token %}
-{{form.creation_date }}
-{{form.as_p }}
+<div class="row">
+    <div class="col-md-6">
+        <div>
+            {{ form.creation_date }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="">
+            Client {{ form.client }}
+        </div>
+        <span>Adresse de Facturation</span>
+        {{address}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="">
+            {{ form.ref }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <span>Adresse de Livraison</span>
+        {{ address }}
+        <div class="">
+            {{ form.payement_date }}
+        </div>
+    </div>
+</div>
+
+
 </fieldset>
 
-<fieldset>
-    <legend>Lignes de la Facture</legend>
     {{ invoiceline_formset.management_form }}
     {{ invoiceline_formset.non_form_errors }}
-    {% for invoiceline_form in invoiceline_formset %}
-        <div class="invoiceline">
-            {{ invoiceline_form.product.errors }}
-            {{ invoiceline_form.product.label_tag }}
-            {{ invoiceline_form.product }}
-            {{ invoiceline_form.quantity.errors }}
-            {{ invoiceline_form.quantity.label_tag }}
-            {{ invoiceline_form.quantity }}
-            {{ invoiceline_form.unit_price.errors }}
-            {{ invoiceline_form.unit_price.label_tag }}
-            {{ invoiceline_form.unit_price }}
+
+
+        <table class="table table-bordered">
+            <tr>
+                <th class="center">Produit</th>
+                <th class="center">Quantité</th>
+                <th class="center">PU TTC</th>
+                <th class="center"></th>
+            </tr>
+            {% for invoiceline_form in invoiceline_formset %}
+            <div >
+            <tr class="invoiceline">
+                <td class="center large">
+                    {{ invoiceline_form.product.errors }}
+                    {{ invoiceline_form.product }}
+                </td>
+                <td>
+                    {{ invoiceline_form.quantity.errors }}
+                    {{ invoiceline_form.quantity }}
+                </td>
+                <td>
+                    {{ invoiceline_form.unit_price.errors }}
+                    {{ invoiceline_form.unit_price }}
+                </td>
+                <td class="trash"></td>
+            </tr>
         </div>
-    {% endfor %}
-</fieldset>
+        {% endfor %}
+        </table>
 
     <button type="submit" class="btn btn-default"> Valider</button>
 </form>
 
 <script type="text/javascript">
     $(function() {
+        $("#id_creation_date, #id_payement_date").datepicker({
+            autoclose : true,
+            calendarWeeks: true,
+            format:"dd/mm/yyyy",
+            language : "fr"
+        });
+
         $('.invoiceline').formset({
             prefix:"{{ invoiceline_formset.prefix }}",
             deleteText : "<i class='fa fa-trash'></i>",
             addText : "<i class='fa fa-plus'></i>",
             added : dynamifyLines
         });
+
+
 
         function dynamifyLines() {
             $(".invoiceline select").change(function(){
@@ -48,7 +97,6 @@
                 $.getJSON( "/product/"+$(this).val()+"/json", function( data ) {
                     unitPriceInput.val(parseInt(data.product.unit_price))
                     quatityInput.val(1)
-
                 })
             });
         }
